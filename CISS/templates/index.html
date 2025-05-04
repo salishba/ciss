@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CISS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      background-color: #f1f1f1;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 800px;
+      margin-bottom: 20px;
+    }
+
+    .header {
+      background-color: #004a75;
+      color: white;
+      padding: 10px 15px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .NERbuttons, .FPPbuttons, .AACbuttons, .SCHSbuttons, .TLEbuttons {
+      padding: 20px;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .row p {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .button-group{
+        display: flex;
+        justify-content: flex-end;
+        flex: 1;
+    }
+
+    .button-group button {
+      margin-right: 5px;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      cursor: pointer;
+    }
+
+    .button-group button.active {
+      background-color: #005b8a;
+      color: white;
+      border: none;
+    }
+
+    .submit-container {
+  width: 800px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submit-button {
+  padding: 8px 16px;
+  background-color: #005b8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #004266;
+}
+
+
+  
+  </style>
+</head>
+<body>
+  <h1>IoT Security Scoring System (CISS)</h1>
+
+  <div class="container">
+    <div class="header">
+      Network & Exposure Risks
+    </div>
+    <div class="NERbuttons">
+      <div class="row">
+        <p>Device Exposure Level</p>
+        <div class="button-group" data-key="deviceExposureLevel">
+          <button class="active" data-value="0" >None</button>
+          <button data-value="1" title="Air-Gapped, No External Access">Low</button>
+          <button data-value="5" title="Behind NAT/Firewall But Accessible Remotely">Medium</button>
+          <button data-value="10" title="Fully Exposed to Public Internet">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Attack Surface Complexity</p>
+        <div class="button-group" data-key="attackSurfaceComplexity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Minimal Surface, Strong Filtering">Low</button>
+          <button data-value="5" title="Limited Services, Some Hardening">Medium</button>
+          <button data-value="10" title="Open Ports, APIs Exposed, No Filtering">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Default Credentials & Weak Authentication</p>
+        <div class="button-group" data-key="defaultCredentials">
+          <button data-value="0" class="active">None</button>
+          <button data-value="1" title="MFA or Strong Access Control">Low</button>
+          <button data-value="5" title="Basic Authentication Without MFA">Medium</button>
+          <button data-value="10" title="Default/Admin Credentials Used">High</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firmware and Patchability Container -->
+  <div class="container">
+    <div class="header">
+      Firmware and Patchability
+    </div>
+    <div class="FPPbuttons">
+      <div class="row">
+        <p>Firmware Update Mechanism</p>
+        <div class="button-group" data-key="firmwareUpdateMechanism">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Secure, Automated OTA Updates">Low</button>
+          <button data-value="5" title="Manual Updates, Some Risks">Medium</button>
+          <button data-value="10" title="No Update Mechanism">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Vulnerability Disclosure & Patch Time</p>
+        <div class="button-group" data-key="vulnDisclosurePatchTime">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Rapid Patching <24h">Low</button>
+          <button data-value="5" title="Patches Within 1 Week">Medium</button>
+          <button data-value="10" title="Slow Patching >1 month">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Code Integrity & Signed Updates</p>
+        <div class="button-group" data-key="codeIntegrity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Strong Cryptographic Verification">Low</button>
+          <button data-value="5" title="Basic Checks, Not Cryptographically Enforced">Medium</button>
+          <button data-value="10" title="No Signatures or Verification">High</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Authenticity and Access Control Container -->
+<div class="container">
+    <div class="header">
+      Authenticity and Access Control
+    </div>
+    <div class="AACbuttons">
+      <div class="row">
+        <p>Access Control Granularity</p>
+        <div class="button-group" data-key="accessControlGranularity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Fine-Grained RBAC">Low</button>
+          <button data-value="5" title="Basic Role Separation">Medium</button>
+          <button data-value="10" title="No RBAC or Fine Controls">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Encryption Of Data At Rest & In Transit</p>
+        <div class="button-group" data-key="encryption">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Strong E2E Encryption">Low</button>
+          <button data-value="5" title="Weak Encryption or Partial Coverage">Medium</button>
+          <button data-value="10" title="No Encryption">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Device Identity and Authentication</p>
+        <div class="button-group" data-key="deviceIdentity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Cryptographic Device Identity">Low</button>
+          <button data-value="5" title="Basic Serials or MACs">Medium</button>
+          <button data-value="10" title="No Unique ID, Spoofable">High</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+    <!-- Supply Chain and Hardware Security -->
+<div class="container">
+    <div class="header">
+      Supply Chain and Hardware Security
+    </div>
+    <div class="SCHSbuttons">
+      <div class="row">
+        <p>Supply Chain Trustworthiness</p>
+        <div class="button-group" data-key="supplyChainTrust">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Audited and Certified Suppliers">Low</button>
+          <button data-value="5" title="Some Vendor Security Disclosures">Medium</button>
+          <button data-value="10" title="No Transparency, High Backdoor Risk">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Hardware Security Features</p>
+        <div class="button-group" data-key="hardwareSecurity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="TPM, HSM, Secure Boot Present">Low</button>
+          <button data-value="5" title="Some Software Checks">Medium</button>
+          <button data-value="10" title="No TPM/Secure Boot">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Side-Channel Attack Resistance</p>
+        <div class="button-group" data-key="sideChannelResistance">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Full Countermeasures In Place">Low</button>
+          <button data-value="5" title="Basic Hardening">Medium</button>
+          <button data-value="10" title="No Resistance">High</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Threat Lanscape and Exploitability -->
+<div class="container">
+    <div class="header">
+      Threat Landscape and Exploitability
+    </div>
+    <div class="TLEbuttons">
+      <div class="row">
+        <p>Exploitability</p>
+        <div class="button-group" data-key="exploitability">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="No Known Vulnerabilities">Low</button>
+          <button data-value="5" title="Known Vulnerability, No Exploit Yet">Medium</button>
+          <button data-value="10" title="Public Exploits Available">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Threat Actor Interest</p>
+        <div class="button-group" data-key="threatActorInterest">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="No Active Threat Interest">Low</button>
+          <button data-value="5" title="Occasional Threats seen">Medium</button>
+          <button data-value="10" title="Targeted By APTs/Ransomware">High</button>
+        </div>
+      </div>
+      <div class="row">
+        <p>Physical Security Risk</p>
+        <div class="button-group" data-key="physicalSecurity">
+          <button class="active" data-value="0">None</button>
+          <button data-value="1" title="Tamper Detection, Secure Enclosure">Low</button>
+          <button data-value="5" title="Some Physical Protections">Medium</button>
+          <button data-value="10" title="Easily Stolen or Tampered">High</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-container">
+    <button class="submit-button" onclick="submitData()">Submit</button>
+  </div>
+  
+  <div id="output" style="margin-top: 20px; width: 800px; white-space: pre-wrap;"></div>
+
+  <script>
+    // Handle button activation
+    document.querySelectorAll('.button-group').forEach(group => {
+      group.addEventListener('click', function(event) {
+        if (event.target.tagName === 'BUTTON') {
+          group.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+          event.target.classList.add('active');
+        }
+      });
+    });
+  
+    // Collect selected values and send to backend
+  function submitData() {
+  const payload = {};
+
+  document.querySelectorAll('.button-group').forEach(group => {
+    const key = group.getAttribute('data-key');
+    const activeButton = group.querySelector('button.active');
+    const value = activeButton ? parseInt(activeButton.getAttribute('data-value')) : null;
+
+    if (key && value !== null) {
+      payload[key] = value;
+    }
+  });
+
+  fetch('/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(response => response.json())
+  .then(data => {
+  // Display the message and score in the alert
+  alert(`\nCISS Score: ${data.score}\n\n${data.message}`);
+  window.location.reload();
+})
+
+  .catch(error => console.error('Error:', error));
+}
+  </script>
+ 
+ <script>
+  const buttons = document.querySelectorAll('.button-group button');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const group = button.parentElement;
+      const allButtons = group.querySelectorAll('button');
+      allButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+    });
+  });
+
+  document.querySelector('.submit-button')?.addEventListener('click', () => {
+    const groups = document.querySelectorAll('.button-group');
+    let totalScore = 0;
+
+    groups.forEach(group => {
+      const active = group.querySelector('button.active');
+      if (active) {
+        totalScore += parseInt(active.getAttribute('data-value'));
+      }
+    });
+
+    // Display score in a div instead of alert
+    const msgBox = document.getElementById('messageBox');
+    msgBox.textContent = `Total CISS Score: ${totalScore}`;
+  });
+</script>
+
+  
+</body>
+</html>
+index.html
+12 KB
