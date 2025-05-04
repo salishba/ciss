@@ -71,6 +71,7 @@
       border: none;
     }
 
+    
     .submit-container {
   width: 800px;
   display: flex;
@@ -278,6 +279,12 @@
     </div>
   </div>
 
+  <div id="resultBox" 
+    style="width: 800px; margin: 20px 0; padding: 15px;
+          border-radius: 5px; text-align: center; font-weight: bold;
+          display: none; /* Hidden by default */">
+  </div>
+
   <div class="submit-container">
     <button class="submit-button" onclick="submitData()">Submit</button>
   </div>
@@ -326,32 +333,64 @@
   </script>
  
  <script>
-  const buttons = document.querySelectorAll('.button-group button');
-
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const group = button.parentElement;
-      const allButtons = group.querySelectorAll('button');
-      allButtons.forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-    });
+  // Handle button selections
+  document.querySelectorAll('.button-group').forEach(group => {
+      group.addEventListener('click', (e) => {
+          if (e.target.tagName === 'BUTTON') {
+              group.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+              e.target.classList.add('active');
+          }
+      });
   });
 
-  document.querySelector('.submit-button')?.addEventListener('click', () => {
-    const groups = document.querySelectorAll('.button-group');
-    let totalScore = 0;
+  // Submit function - modified version
+  async function submitData() {
+      const payload = {};
+      
+      // Collect values
+      document.querySelectorAll('.button-group').forEach(group => {
+          const key = group.getAttribute('data-key');
+          const activeButton = group.querySelector('button.active');
+          if (activeButton) {
+              payload[key] = parseInt(activeButton.getAttribute('data-value'));
+          }
+      });
 
-    groups.forEach(group => {
-      const active = group.querySelector('button.active');
-      if (active) {
-        totalScore += parseInt(active.getAttribute('data-value'));
+      try {
+          const response = await fetch('/submit', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(payload)
+          });
+          
+          const data = await response.json();
+          const resultBox = document.getElementById('resultBox');
+          
+          // Show results
+          resultBox.style.display = 'block';
+          resultBox.textContent = `CISS Score: ${data.score.toFixed(2)} - ${data.message}`;
+          
+          // Update colors
+          if (data.score <= 3) {
+              resultBox.style.backgroundColor = '#e8f5e9';
+              resultBox.style.color = 'green';
+          } else if (data.score <= 6) {
+              resultBox.style.backgroundColor = '#fff3e0';
+              resultBox.style.color = 'orange';
+          } else {
+              resultBox.style.backgroundColor = '#ffebee';
+              resultBox.style.color = 'red';
+          }
+          
+      } catch (error) {
+          console.error('Error:', error);
+          const resultBox = document.getElementById('resultBox');
+          resultBox.style.display = 'block';
+          resultBox.textContent = 'Error calculating score!';
+          resultBox.style.backgroundColor = '#ffebee';
+          resultBox.style.color = 'red';
       }
-    });
-
-    // Display score in a div instead of alert
-    const msgBox = document.getElementById('messageBox');
-    msgBox.textContent = `Total CISS Score: ${totalScore}`;
-  });
+  }
 </script>
 
   
