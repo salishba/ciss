@@ -16,9 +16,6 @@ The scoring is based on 15 predefined metrics derived from the Mirai botnet malw
 * **index.html**
   A front-end file that acts as the GUI. It takes user input for each metric (Low, Medium, or High) using dropdowns. When the user presses the submit button, the data is converted to JSON and sent to the backend (app.py).
 
-* **Report.pdf**
-  A supporting report that contains the details of the 15 metrics, their descriptions, and how weightages were assigned.
-
 
 ---
 
