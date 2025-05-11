@@ -49,6 +49,3 @@ CISS is a lightweight scoring system to calculate the security risk of IoT devic
 3. Open browser at
    `http://localhost:5000`
 
----
-
-Let me know if you want me to format this directly as a `README.md` file for your repo!
