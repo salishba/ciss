@@ -1,51 +1,58 @@
-CISS - IoT Device Security Scoring System
+# CISS - IoT Device Security Scoring System
 
-CISS is a lightweight scoring system to calculate the security risk of IoT devices. The scoring is based on common threats from the Mirai botnet malware (open source available) and assigns weights to different types of vulnerabilities based on how serious they are.
+**Group Number: 03**
 
----
-
-###  What’s in the repo:
-
-* `app.py`
-  Python Flask backend file. Handles the logic for scoring.
-
-  * It receives data as JSON (parsed from the HTML form).
-  * Multiplies user-selected values (Low, Medium, High → converted to numbers) with predefined weights.
-  * These weights are based on how risky each vulnerability is (e.g., physical tampering is low risk, internet exposure is high).
-
-* `index.html`
-  Frontend form for the user to select the severity of each vulnerability.
-
-  * On submit, sends the values as a JSON payload to Flask backend.
-  * Displays final risk score and message (Low, Medium, High).
-
-* `report.pdf`
-  Describes all the 15 metrics used in the scoring system, what they mean, and why they were weighted a certain way.
+CISS is an IoT device security scoring system designed to provide a risk score based on common threats found in Internet of Things environments.
+The scoring is based on 15 predefined metrics derived from the Mirai botnet malware, whose source code is publicly available. Each metric is assigned a weight according to how critical the vulnerability is—e.g., physical tampering is considered less risky compared to insecure online exposure.
 
 ---
 
-###  How it works:
+## Files in the Repository
 
-* User selects severity (e.g., Low/Medium/High) for each metric in the form.
-* Values get sent to `app.py` using JavaScript as a JSON file.
-* Flask receives the data, calculates a final score using:
-  `score = sum(weight * metric)`
-* Returns a message:
+* **app.py**
+  A Python Flask backend file that implements the scoring logic. It receives a parsed JSON file containing the user-inputted IoT device security data. The backend multiplies the input with predefined weightage values and calculates a final score.
+  These weightages are hardcoded and based on the prioritization of vulnerabilities (e.g., default credentials are riskier than lack of physical security).
 
-  * 0–3 = High Risk (needs fixing now)
-  * 4–6 = Medium Risk (mitigation recommended)
-  * 7–10 = Low Risk (secure but still needs monitoring)
+* **index.html**
+  A front-end file that acts as the GUI. It takes user input for each metric (Low, Medium, or High) using dropdowns. When the user presses the submit button, the data is converted to JSON and sent to the backend (app.py).
+
+* **Report.pdf**
+  A supporting report that contains the details of the 15 metrics, their descriptions, and how weightages were assigned.
+
 
 ---
 
-###  To run:
+## How to Run the Project
 
-1. Install Flask
-   `pip install flask`
+1. Install Python and Flask:
 
-2. Run the backend
-   `python app.py`
+   ```
+   pip install flask
+   ```
 
-3. Open browser at
-   `http://localhost:5000`
+2. Run the Flask backend:
+
+   ```
+   python app.py
+   ```
+
+3. Open your browser and go to:
+
+   ```
+   http://localhost:5000
+   ```
+
+4. Enter the severity levels for each metric and submit.
+   The backend calculates the final score and returns a risk category (Low, Medium, or High) with a recommendation.
+
+---
+
+## Tools and Technologies Used
+
+* Flask (Python) – for the backend
+* HTML/CSS – for the frontend
+* JSON – for data transfer
+* MP4 (Screen Demo) – for visualization and testing
+
+---
 
